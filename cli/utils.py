@@ -128,10 +128,10 @@ def select_shallow_thinking_agent(provider) -> str:
     # Define shallow thinking llm engine options with their corresponding model names
     SHALLOW_AGENT_OPTIONS = {
         "openai": [
-            ("GPT-4o-mini - Fast and efficient for quick tasks", "gpt-4o-mini"),
-            ("GPT-4.1-nano - Ultra-lightweight model for basic operations", "gpt-4.1-nano"),
+            ("gpt-5-mini - Fast and efficient for quick tasks", "gpt-5-mini"),
+            ("gpt-5-nano - Ultra-lightweight model for basic operations", "gpt-5-nano"),
             ("GPT-4.1-mini - Compact model with good performance", "gpt-4.1-mini"),
-            ("GPT-4o - Standard model with solid capabilities", "gpt-4o"),
+            ("GPT-5 - Standard model with solid capabilities", "gpt-5"),
         ],
         "anthropic": [
             ("Claude Haiku 3.5 - Fast inference and standard capabilities", "claude-3-5-haiku-latest"),
@@ -150,8 +150,8 @@ def select_shallow_thinking_agent(provider) -> str:
             ("google/gemini-2.0-flash-exp:free - Gemini Flash 2.0 offers a significantly faster time to first token", "google/gemini-2.0-flash-exp:free"),
         ],
         "ollama": [
-            ("llama3.1 local", "llama3.1"),
-            ("llama3.2 local", "llama3.2"),
+            ("llama3.1 local", "llama3.1:8b"),
+            ("Qwen3 local", "qwen3:14b-q4_K_M"),
         ]
     }
 
@@ -186,13 +186,13 @@ def select_deep_thinking_agent(provider) -> str:
     # Define deep thinking llm engine options with their corresponding model names
     DEEP_AGENT_OPTIONS = {
         "openai": [
-            ("GPT-4.1-nano - Ultra-lightweight model for basic operations", "gpt-4.1-nano"),
-            ("GPT-4.1-mini - Compact model with good performance", "gpt-4.1-mini"),
-            ("GPT-4o - Standard model with solid capabilities", "gpt-4o"),
+            ("GPT-4.1-nano - Ultra-lightweight model for basic operations", "gpt-5-nano"),
+            ("GPT-5-mini - Compact model with good performance", "gpt-5-mini"),
+            ("GPT-5 - Standard model with solid capabilities", "gpt-5"),
             ("o4-mini - Specialized reasoning model (compact)", "o4-mini"),
             ("o3-mini - Advanced reasoning model (lightweight)", "o3-mini"),
             ("o3 - Full advanced reasoning model", "o3"),
-            ("o1 - Premier reasoning and problem-solving model", "o1"),
+            ("o4-mini-deep-research", "o4-mini-deep-research"),
         ],
         "anthropic": [
             ("Claude Haiku 3.5 - Fast inference and standard capabilities", "claude-3-5-haiku-latest"),
@@ -212,8 +212,9 @@ def select_deep_thinking_agent(provider) -> str:
             ("Deepseek - latest iteration of the flagship chat model family from the DeepSeek team.", "deepseek/deepseek-chat-v3-0324:free"),
         ],
         "ollama": [
-            ("llama3.1 local", "llama3.1"),
-            ("qwen3", "qwen3"),
+            ("llama3.1 local", "llama3.1:8b"),
+            ("Olmo 3.7", "olmo-3:7b-think-q8_0"),
+            ("Deepseek-r1 Qwen", "deepseek-r1:14b-qwen-distill-q4_K_M")
         ]
     }
     
