@@ -2,6 +2,28 @@ from openai import OpenAI
 from .config import get_config
 
 
+def _extract_response_text(response):
+    """Safely extract text content from OpenAI response.
+    
+    Handles various response formats including web search tool calls.
+    """
+    # Try output_text first (simplest case)
+    if getattr(response, "output_text", None):
+        return response.output_text
+    
+    # Iterate through output items looking for text content
+    for item in getattr(response, "output", []) or []:
+        content = getattr(item, "content", None)
+        if not content:
+            continue
+        for block in content:
+            text = getattr(block, "text", None)
+            if text:
+                return text
+    
+    raise ValueError("No text content found in OpenAI response")
+
+
 def get_stock_news_openai(query, start_date, end_date):
     config = get_config()
     client = OpenAI(base_url=config["backend_url"])
@@ -34,7 +56,7 @@ def get_stock_news_openai(query, start_date, end_date):
         store=True,
     )
 
-    return response.output[1].content[0].text
+    return _extract_response_text(response)
 
 
 def get_global_news_openai(curr_date, look_back_days=7, limit=5):
@@ -69,7 +91,7 @@ def get_global_news_openai(curr_date, look_back_days=7, limit=5):
         store=True,
     )
 
-    return response.output[1].content[0].text
+    return _extract_response_text(response)
 
 
 def get_fundamentals_openai(ticker, curr_date):
@@ -104,4 +126,4 @@ def get_fundamentals_openai(ticker, curr_date):
         store=True,
     )
 
-    return response.output[1].content[0].text
+    return _extract_response_text(response)
