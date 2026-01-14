@@ -13,7 +13,8 @@ DEFAULT_CONFIG = {
     "deep_think_llm": "o4-mini",
     "quick_think_llm": "gpt-4o-mini",
     "backend_url": "https://api.openai.com/v1",
-    "ollama_num_ctx": 16384,  # Context window for Ollama models (default 4096 is limiting)
+    "ollama_num_ctx": 32768,  # Context window for Ollama models
+    "max_tokens": 8192,  # Maximum tokens for LLM responses (prevents truncation)
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
@@ -28,8 +29,8 @@ DEFAULT_CONFIG = {
     },
     # Tool-level configuration (takes precedence over category-level)
     "tool_vendors": {
-        # get_global_news has no alpha_vantage implementation, so use openai
-        "get_global_news": "openai",
+        # get_global_news has no alpha_vantage implementation; use openai with brave fallback
+        "get_global_news": "openai,brave",
         # Example: "get_stock_data": "alpha_vantage",  # Override category default
         # Example: "get_news": "openai",               # Override category default
     },

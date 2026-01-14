@@ -72,27 +72,30 @@ class TradingAgentsGraph:
         )
 
         # Initialize LLMs
+        max_tokens = self.config.get("max_tokens", 8192)
         if self.config["llm_provider"].lower() == "openai" or self.config["llm_provider"].lower() == "openrouter":
-            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
-            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
+            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"], max_tokens=max_tokens)
+            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"], max_tokens=max_tokens)
         elif self.config["llm_provider"].lower() == "ollama":
             ollama_num_ctx = self.config.get("ollama_num_ctx", 16384)
             self.deep_thinking_llm = ChatOpenAI(
                 model=self.config["deep_think_llm"],
                 base_url=self.config["backend_url"],
-                extra_body={"num_ctx": ollama_num_ctx}
+                max_tokens=max_tokens,
+                extra_body={"options": {"num_ctx": ollama_num_ctx}}
             )
             self.quick_thinking_llm = ChatOpenAI(
                 model=self.config["quick_think_llm"],
                 base_url=self.config["backend_url"],
-                extra_body={"num_ctx": ollama_num_ctx}
+                max_tokens=max_tokens,
+                extra_body={"options": {"num_ctx": ollama_num_ctx}}
             )
         elif self.config["llm_provider"].lower() == "anthropic":
-            self.deep_thinking_llm = ChatAnthropic(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
-            self.quick_thinking_llm = ChatAnthropic(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
+            self.deep_thinking_llm = ChatAnthropic(model=self.config["deep_think_llm"], base_url=self.config["backend_url"], max_tokens=max_tokens)
+            self.quick_thinking_llm = ChatAnthropic(model=self.config["quick_think_llm"], base_url=self.config["backend_url"], max_tokens=max_tokens)
         elif self.config["llm_provider"].lower() == "google":
-            self.deep_thinking_llm = ChatGoogleGenerativeAI(model=self.config["deep_think_llm"])
-            self.quick_thinking_llm = ChatGoogleGenerativeAI(model=self.config["quick_think_llm"])
+            self.deep_thinking_llm = ChatGoogleGenerativeAI(model=self.config["deep_think_llm"], max_output_tokens=max_tokens)
+            self.quick_thinking_llm = ChatGoogleGenerativeAI(model=self.config["quick_think_llm"], max_output_tokens=max_tokens)
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config['llm_provider']}")
         
